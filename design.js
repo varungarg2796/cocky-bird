@@ -44,7 +44,7 @@ $(function(){
         	
     	var tube_current_position=parseInt(tube.css('right'));
 
-    	if(tube_current_position>container_width)
+    	if(tube_current_position>container_width-75)
     	{
     		var newHeight=parseInt(Math.random()*100);
 
