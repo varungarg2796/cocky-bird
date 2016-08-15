@@ -1,5 +1,7 @@
 $(function(){
 
+      alert("Ready?");
+
 	//making it easy
 
 	var container=$('#container');
@@ -11,11 +13,12 @@ $(function(){
     var speedSpan = $('#speed');
     var high_score=$('#highscore');
     var restartButton = $('#restartButton');
+    var realScore=0;
 
 
 
-	var container_width = parseInt(container.width());
-    var container_height = parseInt(container.height());
+	var container_width = container.width(); // no need for parseint here
+    var container_height = container.height(); //no need for parseint here
     var tube_initial_position = parseInt(tube.css('right'));
     var tube_initial_height = parseInt(tube.css('height'));
     var bird_left = parseInt(bird.css('left'));
@@ -64,10 +67,11 @@ $(function(){
             }
             scoreUpdated = false;*/
 
-    		//change speed
+    		//change speed 
     		speed=speed+0.5;
     		speedSpan.text(speed);
     		points=points+1;
+            realScore= localStorage.setItem("score",points);
 
     		//add score through local storage
     		if(highscore !== null){
@@ -92,7 +96,7 @@ $(function(){
             }
         }
 
-    },30);
+    },25);
 
 
     //functions defined here
@@ -115,17 +119,32 @@ $(function(){
     });
 
     //for touch
-     container.mousedown(function(){
+     document.addEventListener("mousedown",function(){
+     	// console.log("Clicked");
      	 if (go_up === false && game_over === false) {
             go_up = setInterval(up, 50);
         }
         
     });
 
-     container.mouseup(function(){
+     document.addEventListener("mouseup",function(){
+     	//console.log("Released");
      	 clearInterval(go_up);
             go_up = false;
         });
+
+     document.addEventListener("touchstart",function(){
+     	console.log("touch");
+     	if (go_up === false && game_over === false) {
+            go_up = setInterval(up, 50);
+        }});
+
+        document.addEventListener("touchend",function(){
+        	clearInterval(go_up);
+            go_up = false;
+        });
+
+     
 
 
 
@@ -145,6 +164,8 @@ $(function(){
         clearInterval(gameLogic);
         game_over = true;
         restartButton.slideDown();
+        realScore = localStorage.getItem("score");
+        alert("Score:"+realScore);
     }
 
     restartButton.click(function () {
